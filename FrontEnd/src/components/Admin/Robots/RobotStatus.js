@@ -62,7 +62,8 @@ export default class RobotStatus extends Component {
     ];
 
     validationButton(cell, row, rowIndex, parentComponent){
-        if(row.validation !== 'Not Done'){
+        console.log(row)
+        if(row.validation !== 'Waiting Approbation'){
             return <div className="text-center">{row.validation}</div>
         }else{
             return (
@@ -88,29 +89,29 @@ export default class RobotStatus extends Component {
 
     validationRobotHandler(username, refreshHandler){
 
-        apis.queryRobot.validateRobot(username).then(()=>{
+        apis.retrieveRobot.validateRobot(username).then(()=>{
             refreshHandler()
         })
     }
 
     deleteJobHandler (username , refreshHandler) {
 
-        apis.queryRobot.deleteRobot(username).then(()=>{
+        apis.retrieveRobot.deleteRobot(username).then(()=>{
             refreshHandler()
         })
 
     }
 
     refreshHandler(){
-        apis.queryRobot.getAllRobotsDetails().then( (answerData) => {
+        apis.retrieveRobot.getAllRobotsDetails().then( (answerData) => {
             let rows = []
             answerData.forEach(robotJob => {
                 rows.push({
                     key : Math.random(),
-                    name : robotJob.projectName,
-                    username : robotJob.username,
-                    queriesNb : robotJob.items.length,
-                    validation : robotJob.validation
+                    name : robotJob.content.projectName,
+                    username : robotJob.creator,
+                    queriesNb : robotJob.content.items.length,
+                    validation : robotJob.content.isValidated
                 })
                 
             });

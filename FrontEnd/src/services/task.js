@@ -1,8 +1,6 @@
-import { toastifyError } from "./toastify"
-
 const task = {
 
-  getTaskProgress(taskId){
+  getTask(taskId){
 
     const getJobInfosOption = {
       method: 'GET',
@@ -12,32 +10,30 @@ const task = {
       }
     }
 
-      return fetch('/api/tasks/' + taskId + '/progress' , getJobInfosOption ).then((answer) => {
-          if (!answer.ok) { throw answer }
-          return answer.json()
-        }).catch(error => {
-          console.error(error)
-        })
-        
-  },
-
-  getTaskStatus(taskId){
-
-    const getJobInfosOption = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }
-
-    return fetch('/api/tasks/' + taskId + '/status' , getJobInfosOption ).then((answer) => {
+    return fetch('/api/tasks/' + taskId , getJobInfosOption ).then((answer) => {
         if (!answer.ok) { throw answer }
         return answer.json()
       }).catch(error => {
         console.error(error)
       })
         
+  },
+
+  getTaskOfUser(username,type){
+    const getJobInfosOption = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+
+    return fetch('/api/tasks/' + username + '/' + type, getJobInfosOption ).then((answer) => {
+        if (!answer.ok) { throw answer }
+        return answer.json()
+      }).catch(error => {
+        console.error(error)
+      })
   }
 }
 

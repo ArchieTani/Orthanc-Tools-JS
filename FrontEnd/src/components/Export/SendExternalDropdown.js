@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from "react"
+import React, { Component} from "react"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownButton from "react-bootstrap/DropdownButton"
 
 import apis from "../../services/apis"
-import MonitorTask from "../../tools/ExportMonitorJob"
-import MonitorJob from "../../tools/MonitorJob"
+import MonitorTask from "../../tools/MonitorTask"
 
 export default class SendExternalDropdown extends Component{
 
@@ -21,7 +20,7 @@ export default class SendExternalDropdown extends Component{
     async handleClickDownload(event){
         let endpointId = event.currentTarget.id
 
-        let taskAnswer =  await apis.exportToExternal.exportStudiesToExternal(this.props.exportIds, endpointId)
+        let taskAnswer =  await apis.exportToExternal.exportStudiesToExternal(this.props.username, this.props.exportIds, endpointId)
         let jobMonitoring = new MonitorTask(taskAnswer.id)
 
         let self = this
@@ -40,7 +39,7 @@ export default class SendExternalDropdown extends Component{
     updateProgress(info){
         this.setState({
             disabled : true,
-            title : (['archiving','sending'].includes(info.taskStatus) ? info.taskStatus+' '+info.taskProgress[info.taskStatus]+ ' %' : info.taskStatus)
+            title : (['archiving','sending'].includes(info.state) ? info.state+' '+info.progress[info.state]+ ' %' : info.state)
         })
     }
 
